@@ -1,0 +1,15 @@
+# To connect or disconnect a `Post` and a `User` node via the
+# `UsersPosts`-relation, the `User` node must be the `author`
+# of the corresponding `Post` node.
+query UpdateItemOnStorage(
+  $user_id: ID!
+  $storageStorage_id: ID!
+  $itemItem_id: ID!
+) {
+  SomeItemExists(
+    filter: { AND: [{ id: $itemItem_id }, { user: { id: $user_id } }] }
+  )
+  SomeStorageExists(
+    filter: { AND: [{ id: $storageStorage_id }, { user: { id: $user_id } }] }
+  )
+}

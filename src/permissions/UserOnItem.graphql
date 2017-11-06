@@ -1,0 +1,11 @@
+# To connect or disconnect a `Post` and a `User` node via the 
+# `UsersPosts`-relation, the `User` node must be the `author`
+# of the corresponding `Post` node.
+query UpdateUserOnItem ($user_id: ID!, $userUser_id: ID!) {
+  SomeUserExists(filter: {
+    AND: [{
+      id: $user_id
+    }, {
+      id: $userUser_id,
+  }]})
+}

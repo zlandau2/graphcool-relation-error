@@ -1,0 +1,7 @@
+type AlgoliaSearchAPIPayload {
+  api: String!
+}
+
+extend type Query {
+  algoliaSearchAPI: AlgoliaSearchAPIPayload
+}

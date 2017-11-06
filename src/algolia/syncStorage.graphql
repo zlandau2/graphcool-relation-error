@@ -1,0 +1,18 @@
+subscription {
+  Storage(filter: {
+    mutation_in: [CREATED, UPDATED, DELETED]
+  }) {
+    mutation
+    previousValues {
+      objectID: id
+    }
+    node {
+      objectID: id
+      name
+      description
+      user {
+        id
+      }
+    }
+  }
+}

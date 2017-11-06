@@ -1,0 +1,55 @@
+type File @model {
+  contentType: String!
+  createdAt: DateTime!
+  id: ID! @isUnique
+  item: Item @relation(name: "ItemOnFile")
+  name: String!
+  secret: String! @isUnique
+  size: Int!
+  storage: Storage @relation(name: "StorageOnFile")
+  updatedAt: DateTime!
+  url: String! @isUnique
+}
+
+type Item @model {
+  createdAt: DateTime!
+  description: String!
+  file: File @relation(name: "ItemOnFile")
+  id: ID! @isUnique
+  name: String!
+  storage: Storage @relation(name: "ItemOnStorage")
+  tags: [Tag!]! @relation(name: "ItemOnTag")
+  upc: String
+  updatedAt: DateTime!
+  user: User @relation(name: "UserOnItem")
+}
+
+type Storage @model {
+  createdAt: DateTime!
+  description: String!
+  file: File @relation(name: "StorageOnFile")
+  id: ID! @isUnique
+  items: [Item!]! @relation(name: "ItemOnStorage")
+  name: String!
+  updatedAt: DateTime!
+  user: User @relation(name: "UserOnStorage")
+}
+
+type Tag @model {
+  createdAt: DateTime!
+  id: ID! @isUnique
+  item: Item @relation(name: "ItemOnTag")
+  name: String!
+  updatedAt: DateTime!
+}
+
+type User @model {
+  auth0UserId: String @isUnique
+  createdAt: DateTime!
+  email: String @isUnique
+  id: ID! @isUnique
+  items: [Item!]! @relation(name: "UserOnItem")
+  password: String
+  storages: [Storage!]! @relation(name: "UserOnStorage")
+  updatedAt: DateTime!
+}

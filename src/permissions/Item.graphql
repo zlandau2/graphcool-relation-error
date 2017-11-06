@@ -1,0 +1,19 @@
+query ViewItem ($user_id: ID!, $node_id: ID!) {
+  SomeItemExists(filter: {
+    id: $node_id,
+    author: {
+      id: $user_id
+    }
+  })
+}
+
+query CreateItem($input_userId: ID!, $user_id: ID!) {
+  # check if input id equals user id
+  SomeUserExists(filter: {
+    AND: [{
+      id: $user_id
+    }, {
+      id: $input_userId
+    }]
+  })
+}

@@ -1,0 +1,96 @@
+types: ./types.graphql
+functions: 
+  syncItems:
+    handler:
+      code:
+        src: ./src/algolia/sync.js
+        environment:
+          ALGOLIA_APP_ID: ${env:ALGOLIA_APP_ID}
+          ALGOLIA_API_KEY: ${env:ALGOLIA_API_KEY}
+          #ALGOLIA_INDEX_NAME: ITEMS
+          #ALGOLIA_MODEL_NAME: Item
+    type: subscription
+    query: ./src/algolia/syncItems.graphql
+  syncStorage:
+    handler:
+      code:
+        src: ./src/algolia/sync.js
+        environment:
+          ALGOLIA_APP_ID: ${env:ALGOLIA_APP_ID}
+          ALGOLIA_API_KEY: ${env:ALGOLIA_API_KEY}
+          #ALGOLIA_INDEX_NAME: STORAGE
+          #ALGOLIA_MODEL_NAME: Storage
+    type: subscription
+    query: ./src/algolia/syncStorage.graphql
+  authenticate:
+    handler:
+      code:
+        src: ./src/auth0/auth0Authentication.js
+        environment:
+          AUTH0_DOMAIN: ${env:AUTH0_DOMAIN}
+          AUTH0_API_IDENTIFIER: ${env:AUTH0_API_IDENTIFIER}
+          ALGOLIA_APP_ID: ${env:ALGOLIA_APP_ID}
+          ALGOLIA_API_KEY: ${env:ALGOLIA_API_KEY}
+          ALGOLIA_SEARCH_API_KEY: ${env:ALGOLIA_SEARCH_API_KEY}
+    type: resolver
+    schema: ./src/auth0/auth0Authentication.graphql
+  algoliaSearchAPI:
+    handler:
+      code:
+        src: ./src/auth0/algoliaSearchAPI.js
+        environment:
+          ALGOLIA_APP_ID: ${env:ALGOLIA_APP_ID}
+          ALGOLIA_API_KEY: ${env:ALGOLIA_API_KEY}
+          ALGOLIA_SEARCH_API_KEY: ${env:ALGOLIA_SEARCH_API_KEY}
+    type: resolver
+    schema: ./src/auth0/algoliaSearchAPI.graphql
+
+# TODO: more permissions 
+permissions:
+- operation: File.read
+- operation: File.create
+- operation: File.update
+- operation: File.delete
+- operation: Item.read
+- operation: Item.create
+  authenticated: true
+  query: src/permissions/Item.graphql:CreateItem
+- operation: UserOnItem.connect
+  authenticated: true
+  query: src/permissions/UserOnItem.graphql:UpdateUserOnItem
+- operation: UserOnItem.disconnect
+  authenticated: true
+  query: src/permissions/UserOnItem.graphql:UpdateUserOnItem
+- operation: ItemOnStorage.connect
+  authenticated: true
+  query: src/permissions/ItemOnStorage.graphql:UpdateItemOnStorage
+- operation: ItemOnStorage.disconnect
+  authenticated: true
+  query: src/permissions/ItemOnStorage.graphql:UpdateItemOnStorage
+- operation: Item.update
+  authenticated: true
+- operation: Item.delete
+- operation: Storage.read
+- operation: Storage.create
+  authenticated: true
+  query: src/permissions/Storage.graphql:CreateStorage
+- operation: UserOnStorage.connect
+  authenticated: true
+  query: src/permissions/UserOnStorage.graphql:UpdateUserOnStorage
+- operation: UserOnStorage.disconnect
+  authenticated: true
+  query: src/permissions/UserOnStorage.graphql:UpdateUserOnStorage
+- operation: Storage.update
+- operation: Storage.delete
+- operation: Tag.read
+- operation: Tag.create
+- operation: Tag.update
+- operation: Tag.delete
+- operation: User.read
+- operation: User.create
+- operation: User.update
+- operation: User.delete
+- operation: ItemOnFile.*
+- operation: ItemOnTag.*
+- operation: StorageOnFile.*
+rootTokens: []
